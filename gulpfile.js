@@ -2,6 +2,7 @@
 const gulp = require('gulp');
 const del = require('del');
 const runSequence = require('run-sequence');
+
 const $ = {
   sass: require('gulp-sass'),
   useref: require('gulp-useref'),
@@ -26,32 +27,30 @@ gulp.task('clean', (cb) => {
 });
 
 // Styles
-gulp.task('styles', () => {
-  return gulp.src('./src/styles/**/*.scss')
+gulp.task('styles', () => gulp.src('./src/styles/**/*.scss')
     .pipe($.sass().on('error', $.sass.logError))
-    .pipe(gulp.dest('./dist/css'));
-});
+    .pipe(gulp.dest('./dist/css')));
 
 // Images (For big images that get turned into base64)
 gulp.task('images', (cb) => {
   let file = 'let images = {\n';
-  let addImage = (name, extension) => {
+  const addImage = (name, extension) => {
     // Known to support jpg, png, gif. Supports others if mime type matches extension
     let mimeType = extension;
     if (extension === 'jpg') {
       mimeType = 'jpeg';
     }
 
-    let image = fs.readFileSync(`./images/${name}.${extension}`);
-    let b64 = new Buffer(image).toString('base64');
-    file += `  '${name}': 'data:image/${mimeType};base64, ${b64}',\n`
+    const image = fs.readFileSync(`./images/${name}.${extension}`);
+    const b64 = new Buffer(image).toString('base64');
+    file += `  '${name}': 'data:image/${mimeType};base64, ${b64}',\n`;
   };
 
 
-  addImage('ledger-app','png');
-  addImage('ledger-nano-picture','jpg');
-  addImage('ledger-nano-s-buttons','png');
-  addImage('ledger-logo','png');
+  addImage('ledger-app', 'png');
+  addImage('ledger-nano-picture', 'jpg');
+  addImage('ledger-nano-s-buttons', 'png');
+  addImage('ledger-logo', 'png');
 
 
   file += '};\nmodule.exports = images;';
@@ -59,30 +58,30 @@ gulp.task('images', (cb) => {
 });
 
 
-// Build time config only for CUSTOM builds of StellarTerm
+// Build time config only for CUSTOM builds of FoneroTerm
 gulp.task('customConfig', (cb) => {
   let configFile = '\n// This file generated during the gulp build process.\n';
   configFile += 'window.stCustomConfig = ';
 
-  let configObj = {};
-  if (process.env.STELLARTERM_CUSTOM_HORIZON_URL) {
-    configObj.horizonUrl = process.env.STELLARTERM_CUSTOM_HORIZON_URL;
+  const configObj = {};
+  if (process.env.FONEROTERM_CUSTOM_HORIZON_URL) {
+    configObj.horizonUrl = process.env.FONEROTERM_CUSTOM_HORIZON_URL;
 
     if (configObj.horizonUrl.indexOf('http') !== 0) {
-      throw new Error('STELLARTERM_CUSTOM_HORIZON_URL environment variable must begin with http. Got: ' + process.env.STELLARTERM_CUSTOM_HORIZON_URL);
+      throw new Error(`FONEROTERM_CUSTOM_HORIZON_URL environment variable must begin with http. Got: ${process.env.FONEROTERM_CUSTOM_HORIZON_URL}`);
     }
 
     if (configObj.horizonUrl.substr(-1) === '/') {
-      throw new Error('STELLARTERM_CUSTOM_HORIZON_URL must not have a trailing slash. Got: ' + process.env.STELLARTERM_CUSTOM_HORIZON_URL);
+      throw new Error(`FONEROTERM_CUSTOM_HORIZON_URL must not have a trailing slash. Got: ${process.env.FONEROTERM_CUSTOM_HORIZON_URL}`);
     }
   }
 
-  if (process.env.STELLARTERM_CUSTOM_NETWORK_PASSPHRASE) {
+  if (process.env.FONEROTERM_CUSTOM_NETWORK_PASSPHRASE) {
     if (!configObj.horizonUrl) {
-      throw new Error('To use STELLARTERM_CUSTOM_NETWORK_PASSPHRASE, the environment variable STELLARTERM_CUSTOM_HORIZON_URL must also be set');
+      throw new Error('To use FONEROTERM_CUSTOM_NETWORK_PASSPHRASE, the environment variable FONEROTERM_CUSTOM_HORIZON_URL must also be set');
     }
 
-    configObj.networkPassphrase = process.env.STELLARTERM_CUSTOM_NETWORK_PASSPHRASE;
+    configObj.networkPassphrase = process.env.FONEROTERM_CUSTOM_NETWORK_PASSPHRASE;
   }
 
   configFile += JSON.stringify(configObj, null, 2);
@@ -99,7 +98,7 @@ gulp.task('buildInfo', (cb) => {
   let buildInfo = '\n// This file generated during the gulp build process.\n';
   buildInfo += 'window.stBuildInfo = ';
 
-  let infoObj = {};
+  const infoObj = {};
 
   infoObj.version = parseInt(execSync('git rev-list --count HEAD').toString().trim());
 
@@ -121,13 +120,13 @@ const bundler = watchify(browserify({
   packageCache: {},
   fullPaths: false,
   insertGlobalVars: {
-    horizonUrl: function () { return ''; }
-  }
+    horizonUrl() { return ''; },
+  },
 }));
 const rebundle = () => bundler.bundle()
     // log errors if they happen
     .on('error', (e) => {
-      console.log(e.stack)
+      console.log(e.stack);
     })
     .pipe(source('app.js'))
     .pipe(gulp.dest('./dist/scripts'))
@@ -157,7 +156,7 @@ gulp.task('watch', baseTasks, () => {
     notify: false,
     logPrefix: 'BS',
     server: ['dist'],
-    https: false
+    https: false,
   });
   gulp.watch('./src/index.html', ['html-reload']);
   gulp.watch(['src/**/*.scss'], ['css-reload']);
@@ -188,7 +187,7 @@ gulp.task('copy-fav', () => gulp.src('./favicon*')
 gulp.task('production', () => {
   process.env.NODE_ENV = 'production';
   runSequence(
-    'clean',
+//    'clean',
     baseTasks,
     'copy-fav',
     'uglify-js',
