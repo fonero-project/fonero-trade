@@ -157,7 +157,7 @@ gulp.task('watch', baseTasks, () => {
     notify: false,
     logPrefix: 'BS',
     server: ['dist'],
-    https: true
+    https: false
   });
   gulp.watch('./src/index.html', ['html-reload']);
   gulp.watch(['src/**/*.scss'], ['css-reload']);
