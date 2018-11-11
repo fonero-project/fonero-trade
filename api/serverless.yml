@@ -3,7 +3,7 @@ service: ticker
 frameworkVersion: ">=1.1.0"
 
 custom:
-  bucket: ${env:STELLARTERM_S3_BUCKET}
+  bucket: ${env:FONEROTERM_S3_BUCKET}
 
 provider:
   name: aws

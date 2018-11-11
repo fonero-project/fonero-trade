@@ -1,5 +1,5 @@
 const React = window.React = require('react');
-import Stellarify from '../lib/Stellarify';
+import Foneroify from '../lib/Foneroify';
 import _ from 'lodash';
 
 export default class ManageOffers extends React.Component {

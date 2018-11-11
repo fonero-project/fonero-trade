@@ -47,7 +47,7 @@ export default class AssetCard extends React.Component {
 
     let issuerAccountId;
     if (asset.isNative()) {
-      issuerAccountId = <p className="AssetCard__issuerAccountId">native lumens</p>
+      issuerAccountId = <p className="AssetCard__issuerAccountId">native foneros</p>
     } else {
       issuerAccountId = <p className="AssetCard__issuerAccountId">{issuerId}</p>
     }

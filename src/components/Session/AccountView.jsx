@@ -1,5 +1,5 @@
 const React = window.React = require('react');
-import Stellarify from '../../lib/Stellarify';
+import Foneroify from '../../lib/Foneroify';
 import Printify from '../../lib/Printify';
 import BalancesTable from './BalancesTable.jsx';
 import MinBalance from './MinBalance.jsx';
@@ -18,7 +18,7 @@ export default class AccountView extends React.Component {
             Balances
           </div>
           <div className="Session__AccountView__content">
-            By default, your account is only configured to accept <strong>XLM</strong>. In order to receive other assets, you must <a href="#account/addTrust">accept</a> them using the <strong>Accept assets</strong> tool.
+            By default, your account is only configured to accept <strong>FNO</strong>. In order to receive other assets, you must <a href="#account/addTrust">accept</a> them using the <strong>Accept assets</strong> tool.
           </div>
           <BalancesTable d={this.props.d}></BalancesTable>
         </div>

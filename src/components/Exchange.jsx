@@ -5,7 +5,7 @@ import OfferMakers from './OfferMakers.jsx';
 import ManageOffers from './ManageOffers.jsx';
 import PriceChart from './PriceChart.jsx';
 import Generic from './Generic.jsx';
-import Stellarify from '../lib/Stellarify';
+import Foneroify from '../lib/Foneroify';
 import TermsOfUse from './TermsOfUse.jsx';
 import Ellipsis from './Ellipsis.jsx';
 import directory from '../../directory';
@@ -32,19 +32,19 @@ export default class Exchange extends React.Component {
     let warningWarning;
 
     if (ticker.ready) {
-      let baseSlug = Stellarify.assetToSlug(data.baseBuying);
-      let counterSlug = Stellarify.assetToSlug(data.counterSelling);
+      let baseSlug = Foneroify.assetToSlug(data.baseBuying);
+      let counterSlug = Foneroify.assetToSlug(data.counterSelling);
 
       let aggregateDepth = 0;
 
-      if (baseSlug !== 'XLM-native') {
+      if (baseSlug !== 'FNO-native') {
         for (let i in ticker.data.assets) {
           if (ticker.data.assets[i].slug === baseSlug) {
             aggregateDepth += ticker.data.assets[i].depth10_USD;
           }
         }
       }
-      if (counterSlug !== 'XLM-native') {
+      if (counterSlug !== 'FNO-native') {
         for (let i in ticker.data.assets) {
           if (ticker.data.assets[i].slug === counterSlug) {
             aggregateDepth += ticker.data.assets[i].depth10_USD;

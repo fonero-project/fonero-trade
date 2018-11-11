@@ -3,7 +3,7 @@ import AssetCard from './AssetCard.jsx';
 import AssetPair from './AssetPair.jsx';
 import AssetList from './AssetList.jsx';
 import CustomMarketPicker from './CustomMarketPicker.jsx';
-import Stellarify from '../lib/Stellarify';
+import Foneroify from '../lib/Foneroify';
 import ErrorBoundary from './ErrorBoundary.jsx';
 import _ from 'lodash';
 
@@ -19,9 +19,9 @@ export default class Markets extends React.Component {
           <div className="island">
             <AssetList d={this.props.d}></AssetList>
             <div className="AssetListFooter">
-              StellarTerm does not endorse any of these issuers. They are here for informational purposes only.
+              FoneroTerm does not endorse any of these issuers. They are here for informational purposes only.
               <br />
-              To get listed on StellarTerm, <a href="https://github.com/stellarterm/stellarterm/tree/master/directory" target="_blank" rel="nofollow noopener noreferrer">please read the instructions on GitHub</a>.
+              To get listed on FoneroTerm, <a href="https://github.com/foneroterm/foneroterm/tree/master/directory" target="_blank" rel="nofollow noopener noreferrer">please read the instructions on GitHub</a>.
             </div>
           </div>
         </div>

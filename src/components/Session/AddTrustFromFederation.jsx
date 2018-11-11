@@ -1,6 +1,6 @@
 const React = window.React = require('react');
 import AddTrustRow from './AddTrustRow.jsx';
-import Stellarify from '../../lib/Stellarify';
+import Foneroify from '../../lib/Foneroify';
 import MessageRow from '../MessageRow.jsx';
 import ErrorRow from '../ErrorRow.jsx';
 import _ from 'lodash';
@@ -22,7 +22,7 @@ export default class AddTrustFromFederation extends React.Component {
         currencies: [],
       });
 
-      StellarSdk.StellarTomlResolver.resolve(fedValue)
+      FoneroSdk.FoneroTomlResolver.resolve(fedValue)
       .then(res => {
         if (fedValue !== this.state.federation) {
           return;
@@ -54,7 +54,7 @@ export default class AddTrustFromFederation extends React.Component {
       results = <ErrorRow>Unable to find currencies for {this.state.federation}</ErrorRow>
     } else if (this.state.state === 'found') {
       results = _.map(this.state.currencies, currency => {
-        let asset = Stellarify.assetToml(currency);
+        let asset = Foneroify.assetToml(currency);
         const key = currency.code + currency.issuer;
         return <AddTrustRow key={key} d={this.props.d} asset={asset}></AddTrustRow>;
       });

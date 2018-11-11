@@ -23,7 +23,7 @@ const monthFullDateFormat = '%Y-%m';
 
 const axisDTLF = {
   // We also dont care to show seconds or milliseconds since it is not very relevant in the
-  // context of Stellar
+  // context of Fonero
   millisecond: minutePartDateFormat,
   second: minutePartDateFormat,
   minute: minutePartDateFormat,
@@ -36,7 +36,7 @@ const axisDTLF = {
 
 const dateTimeLabelFormats = {
   // We also dont care to show seconds or milliseconds since it is not very relevant in the
-  // context of Stellar
+  // context of Fonero
   millisecond: minuteFullDateFormat,
   second: minuteFullDateFormat,
   minute: minuteFullDateFormat,
@@ -185,7 +185,7 @@ export default class PriceChart extends React.Component {
         borderWidth: 0,
         crosshairs: [null, null],
         shadow: {
-          // Same as the island stuff in StellarTerm
+          // Same as the island stuff in FoneroTerm
           color: 'rgba(0,0,0,0.375)', // 0.3/0.8=0.375 to account for tooltip opacity
           width: 3,
           offsetX: 0,

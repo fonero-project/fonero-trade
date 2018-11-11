@@ -1,11 +1,11 @@
 let logos = require('./logos');
 // We depend on logos being compiled to a js script so that it can be trivially included
-// in the StellarTerm client without webpack
+// in the Fonero Trade client without webpack
 
 // Constraints: Data should be easily serializable into JSON (no references to each other)
-// directory.js should not depend on creating objects with StellarSdk (though its methods should support reading them)
+// directory.js should not depend on creating objects with FoneroSdk (though its methods should support reading them)
 
-// Note: the DirectoryBuilder concept of slug is slightly different from that of Stellarify
+// Note: the DirectoryBuilder concept of slug is slightly different from that of Foneroify
 // slugs here can only have the format `code-accountId`
 
 function DirectoryBuilder() {
@@ -25,13 +25,13 @@ function DirectoryBuilder() {
 
   // Special anchors aren't really anchors at all!
   this.nativeAnchor = {
-    name: 'Stellar Network',
-    website: 'https://www.stellar.org/lumens/',
-    logo: logos['stellar'],
+    name: 'Fonero Network',
+    website: 'https://www.fonero.org',
+    logo: logos['fonero'],
     color: '#08b5e5',
   };
   this.nativeAsset = {
-    code: 'XLM',
+    code: 'FNO',
     issuer: null,
     domain: 'native',
   };
@@ -81,8 +81,8 @@ DirectoryBuilder.prototype.addAnchor = function(details) {
 }
 
 const POSSIBLE_ASSET_TYPES = {
-  'token': true, // Token means that the coin on Stellar is the coin itself
-  'iou': true, // IOU means that the issuer supposedly claims the tokens are backed by something outside of Stellar
+  'token': true, // Token means that the coin on Fonero is the coin itself
+  'iou': true, // IOU means that the issuer supposedly claims the tokens are backed by something outside of Fonero
 };
 
 DirectoryBuilder.prototype.addAsset = function(anchorDomain, details) {
@@ -200,7 +200,7 @@ DirectoryBuilder.prototype.addDestination = function(accountId, opts) {
       if (typeof assetSlug !== 'string') {
         throw new Error('Destination opts.acceptedAssetsWhitelist must be string. Got: ' + assetSlug);
       } else if (assetSlug.indexOf('-') < 1) {
-        throw new Error('Destination opts.acceptedAssetsWhitelist must be in slug format like XLM-native or BTC-GA7B. Got: ' + assetSlug);
+        throw new Error('Destination opts.acceptedAssetsWhitelist must be in slug format like FNO-native or BTC-GA7B. Got: ' + assetSlug);
       }
 
       this.destinations[accountId].acceptedAssetsWhitelist.push(assetSlug);
@@ -256,18 +256,18 @@ DirectoryBuilder.prototype.getAnchor = function(domain) {
   return this.unknownAnchor;
 }
 
-// DEPRECATED so that we won't have a external dependency of StellarSdk
+// DEPRECATED so that we won't have a external dependency of FoneroSdk
 // getAsset() is general and takes in any of the combination:
 // - code:string, issuerAccountId:string
 // - code:string, anchorDomain:string
-// - sdkAsset:StellarSdk.Asset
+// - sdkAsset:FoneroSdk.Asset
 // All functions that are getAssset*() will return null if the asset is not found
 // getAsset(codeOrSdkAsset, domainOrAccountId) {
-//   if (codeOrSdkAsset instanceof StellarSdk.Asset) {
+//   if (codeOrSdkAsset instanceof FoneroSdk.Asset) {
 //     return this.getAssetBySdkAsset(codeOrSdkAsset);
 //   }
 
-//   if (StellarSdk.StrKey.isValidEd25519PublicKey(domainOrAccountId) ||
+//   if (FoneroSdk.StrKey.isValidEd25519PublicKey(domainOrAccountId) ||
 //      domainOrAccountId === null) {
 //     return this.getAssetByAccountId(codeOrSdkAsset, domainOrAccountId);
 //   }
@@ -276,7 +276,7 @@ DirectoryBuilder.prototype.getAnchor = function(domain) {
 
 // Returns null if asset is not found
 DirectoryBuilder.prototype.getAssetByDomain = function(code, domain) {
-  if (code === 'XLM' && domain === 'native') {
+  if (code === 'FNO' && domain === 'native') {
     return this.nativeAsset;
   }
   if (!this.anchors.hasOwnProperty(domain)) {
@@ -304,7 +304,7 @@ DirectoryBuilder.prototype.getAssetByDomain = function(code, domain) {
 
 // Returns unknown if asset is not found
 DirectoryBuilder.prototype.getAssetByAccountId = function(code, issuer) {
-  if (code === 'XLM' && issuer === null) {
+  if (code === 'FNO' && issuer === null) {
     return this.nativeAsset;
   }
 

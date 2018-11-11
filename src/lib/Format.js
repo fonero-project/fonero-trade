@@ -33,22 +33,22 @@ exports.niceRound = function niceRound(input) {
 // EX: { time: 11:15 AM, date: 12/07/17}
 exports.niceDate = function niceDate(input) {
   try {
-    const date = (new Date(input)).toLocaleString()
-    const splitDate = date.split(",");
+    const date = (new Date(input)).toLocaleString();
+    const splitDate = date.split(',');
 
-    let offsetHours = (new Date(input)).getTimezoneOffset() / 60
+    const offsetHours = (new Date(input)).getTimezoneOffset() / 60;
     let timezone = 'UTC';
     if (offsetHours > 0) {
-      timezone += '+' + offsetHours
+      timezone += `+${offsetHours}`;
     }
 
     if (offsetHours < 0) {
-      timezone += '-' + offsetHours
+      timezone += `-${offsetHours}`;
     }
     return {
       date: splitDate[0],
-      time: splitDate[1].split(":").slice(0,2).join(":") + " " + splitDate[1].split(":")[2].split(" ")[1],
-      timezone: timezone,
+      time: `${splitDate[1].split(':').slice(0, 2).join(':')} ${splitDate[1].split(':')[2].split(' ')[1]}`,
+      timezone,
     };
   } catch (e) {
     return {

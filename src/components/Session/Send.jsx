@@ -1,6 +1,6 @@
 const React = window.React = require('react');
 import AssetCard2 from '../AssetCard2.jsx';
-import Stellarify from '../../lib/Stellarify';
+import Foneroify from '../../lib/Foneroify';
 import Validate from '../../lib/Validate';
 import _ from 'lodash';
 
@@ -37,7 +37,7 @@ export default class Send extends React.Component {
         let destError = Validate.publicKey(d.send.step1.destInput).message && Validate.address(d.send.step1.destInput).message;
         let destinationValidationMessage;
         if (destError) {
-          destinationValidationMessage = <p>Stellar address or account ID is invalid.</p>
+          destinationValidationMessage = <p>Fonero address or account ID is invalid.</p>
         }
 
         let memoContentInput;
@@ -134,7 +134,7 @@ export default class Send extends React.Component {
         let memoSummary = (d.send.memoType === 'none') ? null : <p className="Send__overviewLine">{d.send.memoType}: <strong>{d.send.memoContent}</strong></p>;
         if (d.send.address) {
           Step1Content = <div className="Send__content Send__overview">
-            <p className="Send__overviewLine">Stellar address: <strong>{d.send.address}</strong></p>
+            <p className="Send__overviewLine">Fonero address: <strong>{d.send.address}</strong></p>
             <p className="Send__overviewLine">Account ID: <strong>{d.send.accountId}</strong></p>
             {memoSummary}
           </div>
@@ -218,20 +218,20 @@ export default class Send extends React.Component {
       if (step === 3) {
         let amountValid = Validate.amount(d.send.step3.amount);
         let amountValidationMessage;
-        let maxLumenSpend = d.session.account.maxLumenSpend();
+        let maxFoneroSpend = d.session.account.maxFoneroSpend();
         let yourBalance;
         if (amountValid === false) {
           amountValidationMessage = <p>Amount is invalid</p>
         } else if (d.send.step2.availability.asset !== null) {
-          let targetBalance = d.session.account.getBalance(new StellarSdk.Asset(d.send.step2.availability.asset.code, d.send.step2.availability.asset.issuer));
+          let targetBalance = d.session.account.getBalance(new FoneroSdk.Asset(d.send.step2.availability.asset.code, d.send.step2.availability.asset.issuer));
           if (targetBalance !== null) {
             yourBalance = <p>You have {targetBalance} {d.send.step2.availability.asset.code}.</p>
           }
 
-          if (d.send.step2.availability.asset.code === 'XLM' && d.send.step2.availability.asset.issuer === undefined) {
-            if (Number(d.send.step3.amount) > Number(d.session.account.maxLumenSpend())) {
+          if (d.send.step2.availability.asset.code === 'FNO' && d.send.step2.availability.asset.issuer === undefined) {
+            if (Number(d.send.step3.amount) > Number(d.session.account.maxFoneroSpend())) {
               amountValid = false;
-              amountValidationMessage = <p>You may only send up to <strong>{maxLumenSpend} lumens</strong> due to the minimum balance requirements. For more information, see the <a href="#account">minimum balance tool</a>.</p>
+              amountValidationMessage = <p>You may only send up to <strong>{maxFoneroSpend} foneros</strong> due to the minimum balance requirements. For more information, see the <a href="#account">minimum balance tool</a>.</p>
             }
           }
         }
@@ -264,7 +264,7 @@ export default class Send extends React.Component {
 
       // Step 4
       let Step4Next = step !== 4 ? null : <div className="Send__panel__next">
-        <p>Note: Transactions on the Stellar network are irreversible. Please make sure all the transaction details are correct.</p>
+        <p>Note: Transactions on the Fonero network are irreversible. Please make sure all the transaction details are correct.</p>
         <button className="s-button" onClick={d.send.handlers.submit}>Submit transaction</button>
       </div>
 

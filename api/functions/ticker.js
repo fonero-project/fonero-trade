@@ -1,7 +1,7 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
 const rp = require('request-promise');
-const StellarSdk = require('stellar-sdk');
+const FoneroSdk = require('fonero-sdk');
 const niceRound = require('./utils/niceRound');
 const tradeWalker = require('./utils/tradeWalker');
 
@@ -11,8 +11,8 @@ const run = queue.add;
 
 const directory = require('../directory.json');
 
-Server = new StellarSdk.Server('https://horizon.stellar.org');
-StellarSdk.Network.usePublicNetwork();
+Server = new FoneroSdk.Server('https://horizon.trade.fonero.org');
+FoneroSdk.Network.usePublicNetwork();
 
 function medianOf3(a,b,c) {
   return [a,b,c].sort()[1];
@@ -52,9 +52,9 @@ function phase1(ticker) {
         }
       })
     ,
-    getStellarTermDotComVersion()
+    getFoneroTermDotComVersion()
       .then(version => {
-        ticker._meta.stellarTermVersion = version;
+        ticker._meta.foneroTermVersion = version;
       })
     ,
     getExternalPrices()
@@ -64,16 +64,16 @@ function phase1(ticker) {
         ticker._meta.externalPrices = externalPrices;
 
         // Just incase CMC is down
-        ticker._meta.externalPrices.USD_XLM_24hAgo = ticker._meta.externalPrices.USD_XLM;
+        ticker._meta.externalPrices.USD_FNO_24hAgo = ticker._meta.externalPrices.USD_FNO;
       })
       .then(() => {
-        return rp('https://api.coinmarketcap.com/v1/ticker/stellar/')
+        return rp('https://api.coinmarketcap.com/v1/ticker/fonero/')
           .then(cmcTickerJson => {
-            let cmcStellar = JSON.parse(cmcTickerJson)[0];
-            let newPriceRatio = 1 + Number(cmcStellar.percent_change_24h)/100;
-            let oldPrice = (1/newPriceRatio) * ticker._meta.externalPrices.USD_XLM;
-            ticker._meta.externalPrices.USD_XLM_24hAgo = _.round(oldPrice,6);
-            ticker._meta.externalPrices.USD_XLM_change = _.round(cmcStellar.percent_change_24h,6);
+            let cmcFonero = JSON.parse(cmcTickerJson)[0];
+            let newPriceRatio = 1 + Number(cmcFonero.percent_change_24h)/100;
+            let oldPrice = (1/newPriceRatio) * ticker._meta.externalPrices.USD_FNO;
+            ticker._meta.externalPrices.USD_FNO_24hAgo = _.round(oldPrice,6);
+            ticker._meta.externalPrices.USD_FNO_change = _.round(cmcFonero.percent_change_24h,6);
           })
       })
   ])
@@ -83,14 +83,14 @@ function loadAssets(ticker) {
   ticker.assets = [];
 
   ticker.assets.push({
-    id: 'XLM-native',
-    code: 'XLM',
+    id: 'FNO-native',
+    code: 'FNO',
     issuer: null,
     domain: 'native',
-    slug: 'XLM-native',
-    website: 'https://www.stellar.org/lumens/',
-    price_XLM: 1, // LOL 1 dogecoin = 1 dogecoin; 1 lumen = 1 lumen
-    price_USD: ticker._meta.externalPrices.USD_XLM,
+    slug: 'FNO-native',
+    website: 'https://www.fonero.org',
+    price_FNO: 1, // LOL 1 dogecoin = 1 dogecoin; 1 fonero = 1 fonero
+    price_USD: ticker._meta.externalPrices.USD_FNO,
   })
   _.each(directory.assets, (asset, id) => {
     let r = {};
@@ -113,12 +113,12 @@ function phase3(ticker) {
     };
   });
 
-  let lumenVolumeXLM = 0;
-  let lumenVolumeUSD = 0;
+  let foneroVolumeFNO = 0;
+  let foneroVolumeUSD = 0;
 
   return Promise.all(_.map(ticker.pairs, (pair, pairSlug) => {
-    let baseBuying     = new StellarSdk.Asset(pair.baseBuying.code, pair.baseBuying.issuer);
-    let counterSelling = new StellarSdk.Asset(pair.counterSelling.code, pair.counterSelling.issuer);
+    let baseBuying     = new FoneroSdk.Asset(pair.baseBuying.code, pair.baseBuying.issuer);
+    let counterSelling = new FoneroSdk.Asset(pair.counterSelling.code, pair.counterSelling.issuer);
 
     let asset;
     if (baseBuying.isNative()) {
@@ -168,48 +168,48 @@ function phase3(ticker) {
         pair.depth10Amount = _.round(Math.min(sum10PercentBidAmounts, sum10PercentAskAmounts));
         return Server.tradeAggregation(baseBuying, counterSelling, Date.now() - 86400*1000, Date.now(), 900000).limit(200).order('desc').call()
         .then(trades => {
-          const XLMOldPrice = ticker._meta.externalPrices.USD_XLM_24hAgo;
-          const XLMNewPrice = ticker._meta.externalPrices.USD_XLM;
+          const FNOOldPrice = ticker._meta.externalPrices.USD_FNO_24hAgo;
+          const FNONewPrice = ticker._meta.externalPrices.USD_FNO;
 
           if (baseBuying.isNative()) {
-            asset.change24h_XLM = null;
+            asset.change24h_FNO = null;
             asset.change24h_USD = null;
 
             if (trades.records.length > 6) {
-              let openXLM = 1/medianOf3(Number(trades.records[trades.records.length - 1].close), Number(trades.records[trades.records.length - 2].close), Number(trades.records[trades.records.length - 3].close));
-              let closeXLM = 1/pair.price;
+              let openFNO = 1/medianOf3(Number(trades.records[trades.records.length - 1].close), Number(trades.records[trades.records.length - 2].close), Number(trades.records[trades.records.length - 3].close));
+              let closeFNO = 1/pair.price;
 
-              let openUSD = openXLM * XLMOldPrice;
-              let closeUSD = closeXLM * XLMNewPrice;
-              asset.change24h_XLM = _.round(100*(closeXLM/openXLM - 1), 2);
+              let openUSD = openFNO * FNOOldPrice;
+              let closeUSD = closeFNO * FNONewPrice;
+              asset.change24h_FNO = _.round(100*(closeFNO/openFNO - 1), 2);
               asset.change24h_USD = _.round(100*(closeUSD/openUSD - 1), 2);
             }
 
-            asset.price_XLM = niceRound(1/pair.price);
-            asset.price_USD = niceRound(1/pair.price * ticker._meta.externalPrices.USD_XLM);
+            asset.price_FNO = niceRound(1/pair.price);
+            asset.price_USD = niceRound(1/pair.price * ticker._meta.externalPrices.USD_FNO);
 
-            pair.volume24h_XLM = niceRound(_.sumBy(trades.records, record => Number(record.base_volume)));
+            pair.volume24h_FNO = niceRound(_.sumBy(trades.records, record => Number(record.base_volume)));
           } else if (counterSelling.isNative()) {
-            asset.change24h_XLM = null;
+            asset.change24h_FNO = null;
             asset.change24h_USD = null;
 
-            asset.price_XLM = niceRound(pair.price);
-            asset.price_USD = niceRound(pair.price * ticker._meta.externalPrices.USD_XLM);
+            asset.price_FNO = niceRound(pair.price);
+            asset.price_USD = niceRound(pair.price * ticker._meta.externalPrices.USD_FNO);
 
             if (trades.records.length > 6) {
-              let openXLM = medianOf3(Number(trades.records[trades.records.length - 1].close), Number(trades.records[trades.records.length - 2].close), Number(trades.records[trades.records.length - 3].close));
-              let closeXLM = pair.price;
+              let openFNO = medianOf3(Number(trades.records[trades.records.length - 1].close), Number(trades.records[trades.records.length - 2].close), Number(trades.records[trades.records.length - 3].close));
+              let closeFNO = pair.price;
 
-              let openUSD = openXLM * XLMOldPrice;
-              let closeUSD = closeXLM * XLMNewPrice;
-              asset.change24h_XLM = _.round(100*(closeXLM/openXLM - 1), 2);
+              let openUSD = openFNO * FNOOldPrice;
+              let closeUSD = closeFNO * FNONewPrice;
+              asset.change24h_FNO = _.round(100*(closeFNO/openFNO - 1), 2);
               asset.change24h_USD = _.round(100*(closeUSD/openUSD - 1), 2);
             }
-            pair.volume24h_XLM = niceRound(_.sumBy(trades.records, record => Number(record.counter_volume)));
+            pair.volume24h_FNO = niceRound(_.sumBy(trades.records, record => Number(record.counter_volume)));
           } else {
             // TODO: Add num trades for other trade pairs too
             console.error();
-            console.error('Error: No support in StellarTerm ticker for pairs without XLM. ' + pairSlug);
+            console.error('Error: No support in Fonero Trade ticker for pairs without FNO. ' + pairSlug);
             console.error();
             return;
           }
@@ -218,39 +218,39 @@ function phase3(ticker) {
           asset.numTrades24h = pair.numTrades24h;
           asset._numTradeRecords24h = trades.records.length;
 
-          console.log('Phase 3: ', _.padEnd(pairSlug, 40), _.padStart(pair.numTrades24h + ' trades', 12), _.padStart(asset.price_XLM + ' XLM', 14), _.padStart('$' + asset.price_USD.toFixed(2), 9), 'Change XLM : ' + _.padStart(asset.change24h_XLM,6) + '%','Change USD : ' + _.padStart(asset.change24h_USD,6) + '%', _.padStart(trades.records.length, 4) + ' records')
+          console.log('Phase 3: ', _.padEnd(pairSlug, 40), _.padStart(pair.numTrades24h + ' trades', 12), _.padStart(asset.price_FNO + ' FNO', 14), _.padStart('$' + asset.price_USD.toFixed(2), 9), 'Change FNO : ' + _.padStart(asset.change24h_FNO,6) + '%','Change USD : ' + _.padStart(asset.change24h_USD,6) + '%', _.padStart(trades.records.length, 4) + ' records')
 
-          asset.volume24h_XLM = pair.volume24h_XLM;
-          asset.volume24h_USD = niceRound(pair.volume24h_XLM * ticker._meta.externalPrices.USD_XLM);
+          asset.volume24h_FNO = pair.volume24h_FNO;
+          asset.volume24h_USD = niceRound(pair.volume24h_FNO * ticker._meta.externalPrices.USD_FNO);
 
           asset.spread = pair.spread;
-          lumenVolumeXLM += pair.volume24h_XLM;
-          lumenVolumeUSD += asset.volume24h_USD;
+          foneroVolumeFNO += pair.volume24h_FNO;
+          foneroVolumeUSD += asset.volume24h_USD;
           asset.topTradePairSlug = pairSlug;
 
           asset.numBids = res.bids.length;
           asset.numAsks = res.asks.length;
 
-          asset.depth10_XLM = niceRound(pair.depth10Amount);
-          asset.depth10_USD = niceRound(asset.depth10_XLM*ticker._meta.externalPrices.USD_XLM);
+          asset.depth10_FNO = niceRound(pair.depth10Amount);
+          asset.depth10_USD = niceRound(asset.depth10_FNO*ticker._meta.externalPrices.USD_FNO);
         })
       })
   }))
   .then(() => {
-    ticker.assets[0].volume24h_XLM = niceRound(lumenVolumeXLM);
-    ticker.assets[0].volume24h_USD = niceRound(lumenVolumeUSD);
+    ticker.assets[0].volume24h_FNO = niceRound(foneroVolumeFNO);
+    ticker.assets[0].volume24h_USD = niceRound(foneroVolumeUSD);
   });
 }
 
 function phase4(ticker) {
   // Assign a score to each asset
   _.each(ticker.assets, asset => {
-    if (asset.id === 'XLM-native') {
+    if (asset.id === 'FNO-native') {
       asset.activityScore = 100;
       return;
     }
-    // Has orderbook info relating to XLM
-    if (asset.price_XLM === undefined) {
+    // Has orderbook info relating to FNO
+    if (asset.price_FNO === undefined) {
       asset.activityScore = 0;
       return;
     }
@@ -289,7 +289,7 @@ function phase4(ticker) {
     depth10Score += Math.min(10, asset.depth10_USD/10000); // += [0, 10]
 
     // Volume really helps! However, it's not as important as depth especially
-    // since there are no pecentage fees on the Stellar network
+    // since there are no pecentage fees on the Fonero network
     let volumeScore = Math.log(4 + asset.volume24h_USD)/Math.log(4) - 1; // [0, infinity]
 
     // numTrades is helpful too. Especially the first few num trades are important!
@@ -330,13 +330,13 @@ function phase4(ticker) {
 function getExternalPrices() {
   return Promise.all([
     getBtcPrice(),
-    getLumenPrice(),
+    getFoneroPrice(),
   ])
   .then(externalData => {
     return {
       USD_BTC: externalData[0],
-      BTC_XLM: externalData[1],
-      USD_XLM: _.round(externalData[0]*externalData[1],6),
+      BTC_FNO: externalData[1],
+      USD_FNO: _.round(externalData[0]*externalData[1],6),
     }
   })
 }
@@ -390,8 +390,8 @@ function getBtcPrice() {
   })
 }
 
-// Get lumen price in terms of btc
-function getLumenPrice() {
+// Get fonero price in terms of btc
+function getFoneroPrice() {
   return Promise.all([
     rp('https://poloniex.com/public?command=returnTicker')
       .then(data => {
@@ -401,7 +401,7 @@ function getLumenPrice() {
         return null;
       })
     ,
-    rp('https://bittrex.com/api/v1.1/public/getticker?market=BTC-XLM')
+    rp('https://bittrex.com/api/v1.1/public/getticker?market=BTC-FNO')
       .then(data => {
         return parseFloat(JSON.parse(data).result.Last);
       })
@@ -409,23 +409,23 @@ function getLumenPrice() {
         return null;
       })
     ,
-    rp('https://api.kraken.com/0/public/Ticker?pair=XLMXBT')
+    rp('https://api.kraken.com/0/public/Ticker?pair=FNOXBT')
       .then(data => {
-        return parseFloat(JSON.parse(data).result.XXLMXXBT.c[0]);
+        return parseFloat(JSON.parse(data).result.XFNOXXBT.c[0]);
       })
       .catch(() => {
         return null;
       })
   ])
   .then(allPrices => {
-    let xlmPrice = _.round(_.mean(_.filter(allPrices, price => price !== null)), 8);
-    console.log('Phase 1: XLM price ' + xlmPrice + ' XLM/BTC');
-    return xlmPrice;
+    let fnoPrice = _.round(_.mean(_.filter(allPrices, price => price !== null)), 8);
+    console.log('Phase 1: FNO price ' + fnoPrice + ' FNO/BTC');
+    return fnoPrice;
   })
 }
 
 function getHorizonMain() {
-  return rp('https://horizon.stellar.org/')
+  return rp('https://horizon.trade.fonero.org/')
     .then(horizonMainJson => {
       let horizonMain = JSON.parse(horizonMainJson);
       console.log('Phase 1: Horizon at ledger #' + horizonMain.core_latest_ledger);
@@ -433,20 +433,20 @@ function getHorizonMain() {
     })
 }
 
-function getStellarTermDotComVersion() {
-  console.log('Phase 1: Fetching stellarterm.com')
-  return rp('https://stellarterm.com/')
+function getFoneroTermDotComVersion() {
+  console.log('Phase 1: Fetching trade.fonero.org')
+  return rp('https://trade.fonero.org/')
     .then(indexHtml => {
       let search = indexHtml.match(/stBuildInfo=\{version:(\d+)/)
       if (search.length === 2) {
-        console.log('Phase 1: https://stellarterm.com/ is at version ' + search[1]);
+        console.log('Phase 1: https://trade.fonero.org/ is at version ' + search[1]);
         return search[1];
       }
       console.log('Phase 1: Unable to find version');
       return -1; // Return 0 when couldn't find anything
     })
     .catch(err => {
-      console.error('Phase 1 StellarTerm.com version error: ' + err.message);
+      console.error('Phase 1 trade.fonero.org version error: ' + err.message);
       return -1;
     })
 }

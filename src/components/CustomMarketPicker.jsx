@@ -1,7 +1,7 @@
 const React = window.React = require('react');
 import AssetPair from './AssetPair.jsx';
 import AssetPickerNarrow from './AssetPickerNarrow.jsx';
-import Stellarify from '../lib/Stellarify';
+import Foneroify from '../lib/Foneroify';
 import _ from 'lodash';
 
 export default class CustomMarketPicker extends React.Component {

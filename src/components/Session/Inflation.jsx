@@ -10,7 +10,7 @@ export default class Inflation extends React.Component {
 
     this.state = {
       status: 'ready', // 'ready' | 'working'
-      stellarTermVote: 'ready', // 'ready' | 'working'
+      foneroTermVote: 'ready', // 'ready' | 'working'
       inflationDest: '',
       result: '', // '' | 'success' | 'error'
     }
@@ -49,12 +49,12 @@ export default class Inflation extends React.Component {
       })
     }
 
-    this.handleStellarTermVote = async (event) => {
+    this.handleFoneroTermVote = async (event) => {
       this.props.d.session.handlers.setInflation('GDCHDRSDOBRMSUDKRE2C4U4KDLNEATJPIHHR2ORFL5BSD56G4DQXL4VW')
       .then(bssResult => {
         if (bssResult.status === 'finish') {
           this.setState({
-            stellarTermVote: 'working',
+            foneroTermVote: 'working',
           });
 
           return bssResult.serverResult
@@ -65,7 +65,7 @@ export default class Inflation extends React.Component {
           .catch((error) => {
             console.error(e);
             this.setState({
-              stellarTermVote: 'working',
+              foneroTermVote: 'working',
             });
           });
         }
@@ -85,14 +85,14 @@ export default class Inflation extends React.Component {
       </div>
     } else if (account.inflation_destination === 'GDCHDRSDOBRMSUDKRE2C4U4KDLNEATJPIHHR2ORFL5BSD56G4DQXL4VW') {
       inflationDestInfo = <div>
-        <p>You are currently voting for: <strong>{account.inflation_destination}</strong> (StellarTerm)</p>
+        <p>You are currently voting for: <strong>{account.inflation_destination}</strong> (FoneroTerm)</p>
         <div className="Generic__divider"></div>
-        <h3 className="Inflation__thankYou">Thank you for voting for StellarTerm!</h3>
+        <h3 className="Inflation__thankYou">Thank you for voting for FoneroTerm!</h3>
       </div>
     } else {
-      let stButton = <button className="s-button Inflation__stellarTermVote" onClick={(e) => {this.handleStellarTermVote(e)}}>Vote for StellarTerm</button>
-      if (this.state.stellarTermVote === 'working') {
-        stButton = <button disabled={true} className="s-button Inflation__stellarTermVote" onClick={(e) => {this.handleStellarTermVote(e)}}>Voting... Thank you!</button>
+      let stButton = <button className="s-button Inflation__foneroTermVote" onClick={(e) => {this.handleFoneroTermVote(e)}}>Vote for FoneroTerm</button>
+      if (this.state.foneroTermVote === 'working') {
+        stButton = <button disabled={true} className="s-button Inflation__foneroTermVote" onClick={(e) => {this.handleFoneroTermVote(e)}}>Voting... Thank you!</button>
       }
 
       inflationDestInfo = <div>

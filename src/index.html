@@ -1,8 +1,8 @@
 <!doctype html><html>
   <head>
     <meta charset="utf-8">
-    <title>StellarTerm: Stellar Trading Client</title>
-    <meta name="description" content="Trade on the Stellar Decentralized Exchange. StellarTerm is an open source client for the Stellar network. Send, receive, and trade assets on the Stellar network easily with StellarTerm.">
+    <title>Fonero Trade: Fonero Trading Client</title>
+    <meta name="description" content="Trade on the Fonero Decentralized Exchange. Fonero Trade is an open source client for the Fonero network. Send, receive, and trade assets on the Fonero network easily with Fonero Trade.">
     <meta name="viewport" content="width=1080">
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="icon" sizes="16x16 32x32 64x64" href="/favicon.ico">
@@ -18,11 +18,11 @@
     <script src="./customConfig.js" inline></script>
     <script src="./buildInfo.js" inline></script>
     <script src="./bower_components/highcharts/highstock.js" inline></script>
-    <script src="./bower_components/stellar-sdk/stellar-sdk.min.js" inline></script>
-    <!-- stellar-ledger-api is placed here due to a weird bug in gulp inliner -->
+    <script src="./bower_components/fonero-sdk/fonero-sdk.min.js" inline></script>
+    <!-- fonero-ledger-api is placed here due to a weird bug in gulp inliner -->
     <!-- Copy-paste is intentional as it reduces the amount of dependencies -->
     <!--
-      IMPORTANT DEVELOPER NOTE: This is not a straight copy of the stellar-ledger api
+      IMPORTANT DEVELOPER NOTE: This is not a straight copy of the fonero-ledger api
       This fixes a bug that crashes the client on iOs because u2f tries to go to a
       u2f url.
 
@@ -30,7 +30,7 @@
       u2f.getIosPort_(callback);
     -->
     <script>
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.StellarLedger = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.FoneroLedger = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
 /**
@@ -7919,17 +7919,17 @@ nacl.setPRNG = function(fn) {
 *  limitations under the License.
 ********************************************************************************/
 
-var StellarLedger = module.exports;
+var FoneroLedger = module.exports;
 
-StellarLedger.comm = require('ledgerco/src/ledger-comm-u2f');
-StellarLedger.Api = require('./stellar-ledger-api');
+FoneroLedger.comm = require('ledgerco/src/ledger-comm-u2f');
+FoneroLedger.Api = require('./fonero-ledger-api');
 
-module.exports = StellarLedger;
+module.exports = FoneroLedger;
 
-},{"./stellar-ledger-api":16,"ledgerco/src/ledger-comm-u2f":10}],16:[function(require,module,exports){
+},{"./fonero-ledger-api":16,"ledgerco/src/ledger-comm-u2f":10}],16:[function(require,module,exports){
 (function (Buffer){
 /********************************************************************************
- *   Stellar Ledger API
+ *   Fonero Ledger API
  *   (c) 2017 - 2018 LeNonDupe
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -7965,12 +7965,12 @@ const SW_OK = 0x9000;
 const SW_CANCEL = 0x6985;
 const SW_UNKNOWN_OP = 0x6c24;
 
-var StellarLedgerApi = function(comm) {
+var FoneroLedgerApi = function(comm) {
     this.comm = comm;
     this.comm.setScrambleKey('l0v');
 };
 
-StellarLedgerApi.prototype.getAppConfiguration_async = function() {
+FoneroLedgerApi.prototype.getAppConfiguration_async = function() {
     var buffer = Buffer.alloc(5);
     buffer[0] = CLA;
     buffer[1] = INS_GET_CONF;
@@ -7985,8 +7985,8 @@ StellarLedgerApi.prototype.getAppConfiguration_async = function() {
     });
 };
 
-StellarLedgerApi.prototype.getPublicKey_async = function(path, validateKeypair, confirm) {
-    checkStellarBip32Path(path);
+FoneroLedgerApi.prototype.getPublicKey_async = function(path, validateKeypair, confirm) {
+    checkFoneroBip32Path(path);
     var splitPath = utils.splitPath(path);
     var buffer = Buffer.alloc(5 + 1 + splitPath.length * 4);
     buffer[0] = CLA;
@@ -8017,8 +8017,8 @@ StellarLedgerApi.prototype.getPublicKey_async = function(path, validateKeypair, 
     });
 };
 
-StellarLedgerApi.prototype.signTx_async = function(path, transaction) {
-    checkStellarBip32Path(path);
+FoneroLedgerApi.prototype.signTx_async = function(path, transaction) {
+    checkFoneroBip32Path(path);
 
     if (transaction.operations.length > 1) {
         throw new Error('The transaction contains multiple operations. ' +
@@ -8088,7 +8088,7 @@ StellarLedgerApi.prototype.signTx_async = function(path, transaction) {
             return result;
         } else if (status === SW_UNKNOWN_OP) {
             console.log('Operation unknown to device. ' +
-                'Make sure you have the latest version of the Stellar app on your device.');
+                'Make sure you have the latest version of the Fonero app on your device.');
             // fall back on hash signing (pre-2.0)
             return signTxHash_async_internal.call(self, path, transaction.hash());
         } else {
@@ -8097,11 +8097,11 @@ StellarLedgerApi.prototype.signTx_async = function(path, transaction) {
     });
 };
 
-StellarLedgerApi.prototype.signTxHash_async = function() {
+FoneroLedgerApi.prototype.signTxHash_async = function() {
     throw new Error('This method of signing transactions was removed. Use signTx_async instead.');
 };
 
-StellarLedgerApi.prototype.connect = function(success, error) {
+FoneroLedgerApi.prototype.connect = function(success, error) {
   this.getAppConfiguration_async().then(success)
     .catch(function (err) { error(err); });
 };
@@ -8132,10 +8132,10 @@ function signTxHash_async_internal(path, txHash) {
   });
 }
 
-function checkStellarBip32Path(path) {
+function checkFoneroBip32Path(path) {
     if (!path.startsWith("44'/148'")) {
-        throw new Error("Not a Stellar BIP32 path. Path: " + path + "."
-            + " The Stellar app is authorized only for paths starting with 44'/148'."
+        throw new Error("Not a Fonero BIP32 path. Path: " + path + "."
+            + " The Fonero app is authorized only for paths starting with 44'/148'."
             + " Example: 44'/148'/0'");
     }
     path.split('/').forEach(function (element) {
@@ -8147,13 +8147,13 @@ function checkStellarBip32Path(path) {
     });
 }
 
-module.exports = StellarLedgerApi;
+module.exports = FoneroLedgerApi;
 
 }).call(this,require("buffer").Buffer)
 },{"./utils":17,"buffer":4}],17:[function(require,module,exports){
 (function (Buffer){
 /********************************************************************************
-*   Stellar Ledger API
+*   Fonero Ledger API
 *   (c) 2017-2018 LeNonDupe
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -8175,9 +8175,9 @@ var crc16xmodem = require('crc/lib/crc16_xmodem.js');
 var base32 = require('base32.js');
 var nacl = require("tweetnacl");
 
-var StellarLedgerUtils = {};
+var FoneroLedgerUtils = {};
 
-StellarLedgerUtils.splitPath = function(path) {
+FoneroLedgerUtils.splitPath = function(path) {
     var result = [];
     var components = path.split('/');
     components.forEach(function (element, index) {
@@ -8193,7 +8193,7 @@ StellarLedgerUtils.splitPath = function(path) {
     return result;
 };
 
-StellarLedgerUtils.foreach = function (arr, callback) {
+FoneroLedgerUtils.foreach = function (arr, callback) {
     var deferred = Q.defer();
     var iterate = function (index, array, result) {
         if (index >= array.length) {
@@ -8211,7 +8211,7 @@ StellarLedgerUtils.foreach = function (arr, callback) {
     return deferred.promise;
 };
 
-StellarLedgerUtils.encodeEd25519PublicKey = function(rawPublicKey) {
+FoneroLedgerUtils.encodeEd25519PublicKey = function(rawPublicKey) {
     var versionByte = 6 << 3; // 'G'
     var data          = Buffer.from(rawPublicKey);
     var versionBuffer = Buffer.from([versionByte]);
@@ -8222,14 +8222,14 @@ StellarLedgerUtils.encodeEd25519PublicKey = function(rawPublicKey) {
     return base32.encode(unencoded);
 };
 
-StellarLedgerUtils.verifyEd25519Signature = function(data, signature, publicKey) {
+FoneroLedgerUtils.verifyEd25519Signature = function(data, signature, publicKey) {
     data      = new Uint8Array(data.toJSON().data);
     signature = new Uint8Array(signature.toJSON().data);
     publicKey = new Uint8Array(publicKey.toJSON().data);
     return nacl.sign.detached.verify(data, signature, publicKey);
 };
 
-module.exports = StellarLedgerUtils;
+module.exports = FoneroLedgerUtils;
 
 }).call(this,require("buffer").Buffer)
 },{"base32.js":1,"buffer":4,"crc/lib/crc16_xmodem.js":5,"q":13,"tweetnacl":14}]},{},[15])(15)

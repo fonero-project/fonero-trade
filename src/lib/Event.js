@@ -14,11 +14,11 @@
 export default function Event() {
   // This will break at approximately 9007199254740992+1 listens :P
   let nextIndex = 0;
-  let listeners = []; // stores callbacks
+  const listeners = []; // stores callbacks
 
   // returns a event id reference that can be used to unlisten
   // DEPRECATED: Use sub() instead since it's much easier
-  this.listen = cb => {
+  this.listen = (cb) => {
     const listenerId = nextIndex;
     listeners[listenerId] = cb;
     nextIndex += 1;
@@ -26,17 +26,17 @@ export default function Event() {
   };
 
   // TODO: REFACTOR: Use this sub pattern more often
-  this.sub = cb => {
+  this.sub = (cb) => {
     const listenerId = nextIndex;
     listeners[listenerId] = cb;
     nextIndex += 1;
     return () => {
-      this.unlisten(listenerId)
-    }
+      this.unlisten(listenerId);
+    };
   };
 
 
-  this.unlisten = listenerId => {
+  this.unlisten = (listenerId) => {
     if (!isFinite(listenerId)) {
       throw new Error('Listener ID must be a number');
     }
@@ -48,10 +48,10 @@ export default function Event() {
 
   // Trigger can be called with an object that is passed to the listener
   this.trigger = (data) => {
-    listeners.forEach(cb => {
+    listeners.forEach((cb) => {
       if (cb) {
         cb(data);
       }
-    })
+    });
   };
 }

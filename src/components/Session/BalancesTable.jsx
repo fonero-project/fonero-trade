@@ -1,5 +1,5 @@
 const React = window.React = require('react');
-import Stellarify from '../../lib/Stellarify';
+import Foneroify from '../../lib/Foneroify';
 import Printify from '../../lib/Printify';
 import AssetCard2 from '../AssetCard2.jsx';
 import RemoveTrustLink from './RemoveTrustLink.jsx';
@@ -26,11 +26,11 @@ export default class BalancesTable extends React.Component {
         });
         if (tickerAsset) {
           balanceUSD = '$' + (balance.balance * tickerAsset.price_USD).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-          if (tickerAsset.slug !== 'XLM-native') {
+          if (tickerAsset.slug !== 'FNO-native') {
             tradeLink = <a href={'#exchange/' + tickerAsset.topTradePairSlug} className="BalancesTable__row__trade">trade</a>
           }
         } else {
-          tradeLink = <a href={'#exchange/' + balance.code + '-' + balance.issuer + '/XLM-native'} className="BalancesTable__row__trade">trade</a>
+          tradeLink = <a href={'#exchange/' + balance.code + '-' + balance.issuer + '/FNO-native'} className="BalancesTable__row__trade">trade</a>
         }
       }
       let warning;

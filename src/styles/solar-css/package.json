@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/stellar/solar.git"
+    "url": "https://github.com/fonero-project/solar.git"
   },
-  "author": "Stellar Development Foundation (https://www.stellar.org/)",
+  "author": "Fonero Development Foundation (https://www.fonero.org/)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/stellar/solar/issues"
+    "url": "https://github.com/fonero-project/solar/issues"
   },
-  "homepage": "https://github.com/stellar/solar"
+  "homepage": "https://github.com/fonero-project/solar"
 }

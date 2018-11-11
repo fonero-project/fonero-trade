@@ -56,7 +56,7 @@ export default class HistoryTableRow extends React.Component {
                   header: "STARTING BALANCE: ",
                   value: Printify.lightenZeros(d.starting_balance),
                   isAsset: true,
-                  asset_code: "XLM",
+                  asset_code: "FNO",
                   asset_issuer: null,
                   domain: "native",
                 },
@@ -270,9 +270,9 @@ export default class HistoryTableRow extends React.Component {
                   {
                     x.isAsset ?
                       (<span className="HistoryView__asset">
-                        {x.asset_code || "XLM"}-{x.domain}
+                        {x.asset_code || "FNO"}-{x.domain}
                         <div className="HistoryView__asset__card">
-                          <AssetCard2 code={x.asset_code || 'XLM'} issuer={x.asset_issuer || null}/>
+                          <AssetCard2 code={x.asset_code || 'FNO'} issuer={x.asset_issuer || null}/>
                         </div>
                       </span>)
                     : ""
@@ -282,8 +282,8 @@ export default class HistoryTableRow extends React.Component {
         }
         <div className="HistoryView__external">
           View in external website:&nbsp;
-          <a href={'https://stellar.expert/explorer/tx/' + d.transaction_hash} target="_blank" rel="nofollow noopener noreferrer">stellar.expert</a>&nbsp;
-          <a href={'https://horizon.stellar.org/transactions/' + d.transaction_hash} target="_blank" rel="nofollow noopener noreferrer">Horizon</a>
+          <a href={'https://fonero.expert/explorer/tx/' + d.transaction_hash} target="_blank" rel="nofollow noopener noreferrer">fonero.expert</a>&nbsp;
+          <a href={'https://horizon.fonero.org/transactions/' + d.transaction_hash} target="_blank" rel="nofollow noopener noreferrer">Horizon</a>
         </div>
         <div className="HistoryView__external">
           Transaction ID: <strong>{d.transaction_hash}</strong>

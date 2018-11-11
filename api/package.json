@@ -1,6 +1,6 @@
 {
-  "name": "stellarterm-ticker",
-  "description": "Creates a ticker with information on the markets on Stellar",
+  "name": "fonero-trade-ticker",
+  "description": "Creates a ticker with information on the markets on Fonero",
   "dependencies": {
     "aws-sdk": "^2.7.9",
     "bluebird": "^3.5.0",
@@ -10,6 +10,6 @@
     "p-queue": "^2.1.0",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
-    "stellar-sdk": "^0.8.0"
+    "fonero-sdk": "https://github.com/fonero-project/js-fonero-sdk"
   }
 }

@@ -1,6 +1,6 @@
 # Solar css framework
 
-Solar is a front-end css framework. It was originally developed for use with the [Stellar Interstellar Module System](https://github.com/stellar/interstellar/). It is currently mainly used on front-end projects by Stellar.org.
+Solar is a front-end css framework. It was originally developed for use with the [Fonero Interfonero Module System](https://github.com/fonero-project/interfonero/). It is currently mainly used on front-end projects by Fonero.org.
 
 This framework was designed to work in layers so that specific layers of the solar framework could be replaced with ease.
 
@@ -14,19 +14,19 @@ The `solar` css framework is:
 ## Getting started
 To see an example of solar in use, see the new client.
 
-To learn about the different parts of the solar ecosystem and how extensions and themes come in, read the [Solar css framework architecture](https://github.com/stellar/solar/blob/master/docs/architecture.md).
+To learn about the different parts of the solar ecosystem and how extensions and themes come in, read the [Solar css framework architecture](https://github.com/fonero-project/solar/blob/master/docs/architecture.md).
 
-To learn about how to write css consistent with the design laid out in solar, read the [solar css guide](https://github.com/stellar/solar/blob/master/docs/css-guide.md).
+To learn about how to write css consistent with the design laid out in solar, read the [solar css guide](https://github.com/fonero-project/solar/blob/master/docs/css-guide.md).
 
 ## Simple usage
 At the top of your css file, import the necessary files in the right order. For example:
 ```
 @import '../../node_modules/solar-css/lib/index';
-@import '../../node_modules/solar-stellarorg/lib/index';
+@import '../../node_modules/solar-foneroorg/lib/index';
 
 @import '../../node_modules/solar-css/styles/index';
-@import '../../node_modules/solar-stellarorg/styles/index';
-@import '../../node_modules/solar-stellarorg-pages/styles/index';
+@import '../../node_modules/solar-foneroorg/styles/index';
+@import '../../node_modules/solar-foneroorg-pages/styles/index';
 ```
 
 This allows for useful error/warning messages from sass since the direct files are being imported and not just bundled. The downside is that the developer will have to manage this. However, if the developer already understands how Solar works, then it should be easy.

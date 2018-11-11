@@ -1,6 +1,6 @@
 const React = window.React = require('react');
 import OfferTable from './OfferTable.jsx';
-import Stellarify from '../lib/Stellarify';
+import Foneroify from '../lib/Foneroify';
 import Printify from '../lib/Printify';
 import BigNumber from 'bignumber.js';
 import _ from 'lodash';

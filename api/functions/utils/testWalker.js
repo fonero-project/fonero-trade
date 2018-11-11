@@ -1,15 +1,15 @@
 const _ = require('lodash');
-const StellarSdk = require('stellar-sdk');
+const FoneroSdk = require('fonero-sdk');
 const directory = require('../../directory.json');
 const tradeWalker = require('./tradeWalker');
 
-Server = new StellarSdk.Server('https://horizon.stellar.org');
-StellarSdk.Network.usePublicNetwork();
+Server = new FoneroSdk.Server('https://horizon.trade.fonero.org');
+FoneroSdk.Network.usePublicNetwork();
 
 
 
 tradeWalker.walkUntil(Server, {
-  code: 'XLM',
+  code: 'FNO',
   issuer: null,
 }, {
   code:'BTC',

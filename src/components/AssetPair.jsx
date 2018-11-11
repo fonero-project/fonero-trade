@@ -1,7 +1,7 @@
 const React = window.React = require('react');
 import AssetCard2 from './AssetCard2.jsx';
 import AssetPickerNarrow from './AssetPickerNarrow.jsx';
-import Stellarify from '../lib/Stellarify';
+import Foneroify from '../lib/Foneroify';
 import _ from 'lodash';
 
 export default class AssetPair extends React.Component {
@@ -29,7 +29,7 @@ export default class AssetPair extends React.Component {
 
     if (this.props.row) {
       if (this.props.baseBuying && this.props.counterSelling) {
-        let url = '#' + Stellarify.pairToExchangeUrl(this.props.baseBuying, this.props.counterSelling);
+        let url = '#' + Foneroify.pairToExchangeUrl(this.props.baseBuying, this.props.counterSelling);
         // In the future, this can be split into AssetPairRow and AssetPair if the row is not needed
         return <a href={url} key={url} className="AssetPairRow">
           {content}

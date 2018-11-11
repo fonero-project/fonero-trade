@@ -26,22 +26,22 @@ export default class AssetPickerNarrow extends React.Component {
     }
   }
   checkInputs(newState) {
-    if (newState.code === 'XLM' && newState.issuer === '') {
-      return StellarSdk.Asset.native();
+    if (newState.code === 'FNO' && newState.issuer === '') {
+      return FoneroSdk.Asset.native();
     }
 
     let assetByAccountId = directory.getAssetByAccountId(newState.code, newState.issuer);
     if (assetByAccountId !== null) {
-      return new StellarSdk.Asset(assetByAccountId.code, assetByAccountId.issuer);
+      return new FoneroSdk.Asset(assetByAccountId.code, assetByAccountId.issuer);
     }
 
     let assetByDomain = directory.getAssetByDomain(newState.code, newState.issuer);
     if (assetByDomain !== null) {
-      return new StellarSdk.Asset(assetByDomain.code, assetByDomain.issuer);
+      return new FoneroSdk.Asset(assetByDomain.code, assetByDomain.issuer);
     }
 
     if (Validate.publicKey(newState.issuer).ready && Validate.assetCode(newState.code)) {
-      return new StellarSdk.Asset(newState.code, newState.issuer);
+      return new FoneroSdk.Asset(newState.code, newState.issuer);
     }
 
     return null;
@@ -52,7 +52,7 @@ export default class AssetPickerNarrow extends React.Component {
         <span className="s-inputGroup__item AssetPickerNarrow__tag s-inputGroup__item--tag S-flexItem-full">
           <span>Asset Code</span>
         </span>
-        <input className="s-inputGroup__item AssetPickerNarrow__input S-flexItem-full" type="text" value={this.state.code} onChange={e => this.handleInput('code', e)} placeholder="example: XLM" />
+        <input className="s-inputGroup__item AssetPickerNarrow__input S-flexItem-full" type="text" value={this.state.code} onChange={e => this.handleInput('code', e)} placeholder="example: FNO" />
       </label>
       <label className="s-inputGroup AssetPickerNarrow__inputGroup AssetPickerNarrow__issuer">
         <span className="s-inputGroup__item AssetPickerNarrow__tag s-inputGroup__item--tag S-flexItem-full">

@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const StellarSdk = require('stellar-sdk');
+const FoneroSdk = require('fonero-sdk');
 
 let tradeWalker = {};
 
@@ -13,7 +13,7 @@ function matchesAsset(res, tradeType, asset) {
     throw new TypeError('tradeType argument for matchesAsset is supposed to be either bought or sold');
   }
 
-  return (res[prefix + '_asset_type'] === 'native' && asset.code === 'XLM' && asset.issuer === null)
+  return (res[prefix + '_asset_type'] === 'native' && asset.code === 'FNO' && asset.issuer === null)
     ||
   (res[prefix + '_asset_code'] === asset.code && res[prefix + '_asset_issuer'] === asset.issuer);
 }
@@ -29,8 +29,8 @@ tradeWalker.walkUntil = function walkUntil(Server, baseBuying, counterSelling, p
   const MAX_DEPTH = 5;
   let prevCall;
 
-  let baseBuyingSdk = new StellarSdk.Asset(baseBuying.code, baseBuying.issuer);
-  let counterSellingSdk = new StellarSdk.Asset(counterSelling.code, counterSelling.issuer);
+  let baseBuyingSdk = new FoneroSdk.Asset(baseBuying.code, baseBuying.issuer);
+  let counterSellingSdk = new FoneroSdk.Asset(counterSelling.code, counterSelling.issuer);
 
   let tradeCalls = Server.trades().forAssetPair(baseBuyingSdk, counterSellingSdk).limit(200).order('desc').call()
   let processResults = tradeResults => {

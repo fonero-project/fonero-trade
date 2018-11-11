@@ -18,7 +18,7 @@ export default class DepositAnchors extends React.Component {
         if (assetCode === this.props.selectedAssetCode) {
           const assetIssuer = assetParts[1];
           const name = anchor.name;
-          const asset = new StellarSdk.Asset(assetCode, assetIssuer);
+          const asset = new FoneroSdk.Asset(assetCode, assetIssuer);
           const instructions = directory.assets[assetId].instructions || '';
           const row = (<tr className="row" key={name + '_' + assetCode + '_' + assetIssuer}>
               <td className="row__item--assetCard">
@@ -39,8 +39,8 @@ export default class DepositAnchors extends React.Component {
 
     return (<div>
       <div className="island__paddedContent">
-        <p>This is a list of anchors from the Stellar community.<br/>
-        Note: StellarTerm does not endorse any of these anchors.</p>
+        <p>This is a list of anchors from the Fonero community.<br/>
+        Note: FoneroTerm does not endorse any of these anchors.</p>
       </div>
       <table className="row__full_width">
         <tbody>

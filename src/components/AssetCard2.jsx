@@ -2,7 +2,7 @@ const React = window.React = require('react');
 import Printify from '../lib/Printify';
 import directory from '../directory';
 
-// This is AssetCard2, the preferred way of displaying an asset in stellarterm.
+// This is AssetCard2, the preferred way of displaying an asset in foneroterm.
 // The parent container should be 340px or wider
 
 // Options
@@ -30,7 +30,7 @@ export default class AssetCard2 extends React.Component {
     }
 
     let asset = {};
-    if (this.props.code === 'XLM' && this.props.domain === undefined && this.props.issuer === undefined) {
+    if (this.props.code === 'FNO' && this.props.domain === undefined && this.props.issuer === undefined) {
       asset = directory.nativeAsset;
     } else {
       if (this.props.domain !== undefined) {
@@ -54,7 +54,7 @@ export default class AssetCard2 extends React.Component {
       backgroundStyle.background = rgbaColor;
     }
 
-    let issuerAccountId = (asset.issuer === null) ? 'native lumens' : asset.issuer.substr(0,12) + '.........' + asset.issuer.substr(-12,12);
+    let issuerAccountId = (asset.issuer === null) ? 'native foneros' : asset.issuer.substr(0,12) + '.........' + asset.issuer.substr(-12,12);
     // Unlike AssetCard (original), this one does not link to the domain. Users can simply type it in the address bar
 
     let assetCardMain = <div className="AssetCard2__main" style={backgroundStyle}>

@@ -1,5 +1,5 @@
 const React = window.React = require('react');
-import Stellarify from '../../lib/Stellarify';
+import Foneroify from '../../lib/Foneroify';
 import Printify from '../../lib/Printify';
 import AssetCard2 from '../AssetCard2.jsx';
 import RemoveTrustLink from './RemoveTrustLink.jsx';
@@ -37,7 +37,7 @@ export default class ManageCurrentTrust extends React.Component {
         Assets you accept
       </div>
       <div className="island__paddedContent">
-        To receive assets on the Stellar network, you must first "accept" the asset.
+        To receive assets on the Fonero network, you must first "accept" the asset.
       </div>
       <div className="island__separator"></div>
       <table className="ManageCurrentTrust">

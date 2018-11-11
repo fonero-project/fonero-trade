@@ -12,15 +12,13 @@ function get(url) {
       });
     }).on('error', (e) => {
       reject(e);
-    })
+    });
   });
 }
 
 function getJson(url) {
   return get(url)
-    .then(body => {
-      return JSON.parse(body);
-    });
+    .then(body => JSON.parse(body));
 }
 
 export default {

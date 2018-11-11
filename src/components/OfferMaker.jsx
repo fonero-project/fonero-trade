@@ -1,5 +1,5 @@
 const React = window.React = require('react');
-import Stellarify from '../lib/Stellarify';
+import Foneroify from '../lib/Foneroify';
 import Printify from '../lib/Printify';
 import BigNumber from 'bignumber.js';
 import _ from 'lodash';
@@ -211,8 +211,8 @@ export default class OfferMaker extends React.Component {
         let inputSpendAmount = this.props.side === 'buy' ? this.state.total : this.state.amount;
         let maxOffer = targetBalance;
         if (targetAsset.isNative()) {
-          maxOffer = this.props.d.session.account.maxLumenSpend();
-          youHave = <div className="OfferMaker__youHave">You may trade up to {maxOffer} XLM (due to <a href="#account">minimum balance requirements</a>).</div>;
+          maxOffer = this.props.d.session.account.maxFoneroSpend();
+          youHave = <div className="OfferMaker__youHave">You may trade up to {maxOffer} FNO (due to <a href="#account">minimum balance requirements</a>).</div>;
         } else {
           youHave = <div className="OfferMaker__youHave">You have {targetBalance} {targetAsset.getCode()}</div>;
         }
@@ -260,16 +260,16 @@ export default class OfferMaker extends React.Component {
           Unable to create offer because the issuer has not authorized you to trade this asset. To fix this issue, check with the issuer's website.<br /><br />NOTE: Some issuers are restrictive in who they authorize.
         </div>;
       } else if (this.state.errorType === 'op_low_reserve') {
-        error = <div className="s-alert s-alert--alert OfferMaker__message">Your account does not have enough XLM to meet the <a href="https://www.stellar.org/developers/guides/concepts/fees.html#minimum-account-balance" target="_blank" rel="nofollow noopener noreferrer">minimum balance</a>. For more info, see <a href="#account">the minimum balance section</a> of the account page.<br /><br />Solutions:
+        error = <div className="s-alert s-alert--alert OfferMaker__message">Your account does not have enough FNO to meet the <a href="https://www.fonero.org/developers/guides/concepts/fees.html#minimum-account-balance" target="_blank" rel="nofollow noopener noreferrer">minimum balance</a>. For more info, see <a href="#account">the minimum balance section</a> of the account page.<br /><br />Solutions:
           <ul className="OfferMaker__errorList">
-            <li>Send at least 1 XLM to your account</li>
+            <li>Send at least 1 FNO to your account</li>
             <li>Cancel an existing an offer</li>
             <li>Decrease your minimum balance by <a href="#account/addTrust">unaccepting an asset</a></li>
           </ul>
         </div>;
       } else if (this.state.errorType === 'tx_bad_seq') {
         error = <div className="s-alert s-alert--alert OfferMaker__message">
-          Transaction failed because sequence got out of sync. Please reload StellarTerm and try again.
+          Transaction failed because sequence got out of sync. Please reload FoneroTerm and try again.
         </div>;
       } else {
         error = <div className="s-alert s-alert--alert OfferMaker__message">Failed to create offer.

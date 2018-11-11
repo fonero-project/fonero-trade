@@ -1,7 +1,7 @@
 const Promise = require('bluebird');
 const _ = require('lodash');
 const rp = require('request-promise');
-const StellarSdk = require('stellar-sdk');
+const FoneroSdk = require('fonero-sdk');
 
 const PQueue = require('p-queue');
 const queue = new PQueue({concurrency: 20});
@@ -9,10 +9,10 @@ const run = queue.add;
 
 const directory = require('../directory.json');
 
-StellarSdk.Network.usePublicNetwork();
+FoneroSdk.Network.usePublicNetwork();
 
-S = new StellarSdk.Server('https://horizon.stellar.org');
-StellarSdk.Network.usePublicNetwork();
+S = new FoneroSdk.Server('https://horizon.trade.fonero.org');
+FoneroSdk.Network.usePublicNetwork();
 
 function historyGenerator() {
   let finish;
@@ -58,12 +58,12 @@ function phase2(ticker) {
   ticker.assets = [];
 
   ticker.assets.push({
-    id: 'XLM-native',
-    code: 'XLM',
+    id: 'FNO-native',
+    code: 'FNO',
     issuer: null,
     domain: 'native',
-    slug: 'XLM-native',
-    website: 'https://www.stellar.org/lumens/',
+    slug: 'FNO-native',
+    website: 'https://www.fonero.org',
   })
   _.each(directory.assets, (asset, id) => {
     let r = {};
@@ -84,13 +84,13 @@ function phase3(ticker) {
 function getExternalPrices() {
   return Promise.all([
     getBtcPrice(),
-    getLumenPrice(),
+    getFoneroPrice(),
   ])
   .then(externalData => {
     return {
       USD_BTC: externalData[0],
-      BTC_XLM: externalData[1],
-      USD_XLM: _.round(externalData[0]*externalData[1],6),
+      BTC_FNO: externalData[1],
+      USD_FNO: _.round(externalData[0]*externalData[1],6),
     }
   })
 }
@@ -134,8 +134,8 @@ function getBtcPrice() {
   })
 }
 
-// Get lumen price in terms of btc
-function getLumenPrice() {
+// Get Fonero price in terms of btc
+function getFoneroPrice() {
   return Promise.all([
     rp('https://poloniex.com/public?command=returnTicker')
       .then(data => {
@@ -145,7 +145,7 @@ function getLumenPrice() {
         return null;
       })
     ,
-    rp('https://bittrex.com/api/v1.1/public/getticker?market=BTC-XLM')
+    rp('https://bittrex.com/api/v1.1/public/getticker?market=BTC-FNO')
       .then(data => {
         return parseFloat(JSON.parse(data).result.Last);
       })
@@ -153,9 +153,9 @@ function getLumenPrice() {
         return null;
       })
     ,
-    rp('https://api.kraken.com/0/public/Ticker?pair=XLMXBT')
+    rp('https://api.kraken.com/0/public/Ticker?pair=FNOXBT')
       .then(data => {
-        return parseFloat(JSON.parse(data).result.XXLMXXBT.c[0]);
+        return parseFloat(JSON.parse(data).result.XFNOXXBT.c[0]);
       })
       .catch(() => {
         return null;
@@ -167,7 +167,7 @@ function getLumenPrice() {
 }
 
 function getHorizonMain() {
-  return rp('https://horizon.stellar.org/')
+  return rp('https://horizon.trade.fonero.org/')
     .then(horizonMain => {
       return JSON.parse(horizonMain);
     })

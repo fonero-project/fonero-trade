@@ -1,5 +1,5 @@
 const React = window.React = require('react');
-import Stellarify from '../lib/Stellarify';
+import Foneroify from '../lib/Foneroify';
 import ManageOfferRow from './ManageOfferRow.jsx';
 import _ from 'lodash';
 
@@ -21,8 +21,8 @@ export default class ManageOffers extends React.Component {
     let rectifiedSellOffers = [];
     // _.each(fakeOffers, offer => {
     _.each(this.props.d.session.account.offers, offer => {
-      if (Stellarify.isOfferRelevant(orderbook.baseBuying, orderbook.counterSelling, offer)) {
-        let rectifiedOffer = Stellarify.rectifyOffer(orderbook.baseBuying, orderbook.counterSelling, offer);
+      if (Foneroify.isOfferRelevant(orderbook.baseBuying, orderbook.counterSelling, offer)) {
+        let rectifiedOffer = Foneroify.rectifyOffer(orderbook.baseBuying, orderbook.counterSelling, offer);
         if (rectifiedOffer.side === 'buy') {
           rectifiedBuyOffers.push(rectifiedOffer);
         } else {

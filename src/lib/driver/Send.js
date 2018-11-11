@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import MagicSpoon from '../MagicSpoon';
-import Stellarify from '../Stellarify';
+import Foneroify from '../Foneroify';
 import directory from '../../directory';
 import Validate from '../Validate';
 import Event from '../Event';
@@ -35,8 +35,8 @@ export default function Send(driver) {
 
   const resetStep2 = () => {
     this.availableAssets = {};
-    this.availableAssets[Stellarify.assetToSlug(new StellarSdk.Asset.native())] = {
-      asset: new StellarSdk.Asset.native(),
+    this.availableAssets[Foneroify.assetToSlug(new FoneroSdk.Asset.native())] = {
+      asset: new FoneroSdk.Asset.native(),
       sendable: true,
     };
     this.step2 = {
@@ -77,19 +77,19 @@ export default function Send(driver) {
   const calculateAvailableAssets = () => {
     // Calculate the assets that you can send to the destination
     this.availableAssets = {};
-    this.availableAssets[Stellarify.assetToSlug(new StellarSdk.Asset.native())] = {
-      asset: new StellarSdk.Asset.native(),
+    this.availableAssets[Foneroify.assetToSlug(new FoneroSdk.Asset.native())] = {
+      asset: new FoneroSdk.Asset.native(),
       sendable: true,
     };
     const senderTrusts = {};
     const receiverTrusts = {};
 
-    let sendableAssets = {};
-    let unSendableAssets = {};
+    const sendableAssets = {};
+    const unSendableAssets = {};
 
     _.each(driver.session.account.balances, (balance) => {
-      const asset = Stellarify.asset(balance);
-      const slug = Stellarify.assetToSlug(asset);
+      const asset = Foneroify.asset(balance);
+      const slug = Foneroify.assetToSlug(asset);
       if (asset.isNative()) {
         return;
       }
@@ -97,8 +97,8 @@ export default function Send(driver) {
         // Edgecase: Receiver is the issuer of the asset
         // Note: Accounts cant extend trust to themselves, so no further edgecases on this situation
         this.availableAssets[slug] = {
-          asset: asset,
-          sendable: true
+          asset,
+          sendable: true,
         };
         receiverTrusts[slug] = true;
       } else {
@@ -107,8 +107,8 @@ export default function Send(driver) {
     });
 
     _.each(this.targetAccount.balances, (balance) => {
-      const asset = Stellarify.asset(balance);
-      const slug = Stellarify.assetToSlug(asset);
+      const asset = Foneroify.asset(balance);
+      const slug = Foneroify.assetToSlug(asset);
       if (asset.isNative()) {
         return;
       }
@@ -117,17 +117,17 @@ export default function Send(driver) {
     });
 
     _.each(this.targetAccount.balances, (balance) => {
-      const asset = Stellarify.asset(balance);
-      const slug = Stellarify.assetToSlug(asset);
+      const asset = Foneroify.asset(balance);
+      const slug = Foneroify.assetToSlug(asset);
       if (senderTrusts.hasOwnProperty(slug)) {
         sendableAssets[slug] = {
-          asset: asset,
+          asset,
           sendable: true,
         };
       } else if (asset.getIssuer() === driver.session.account.accountId()) {
         // Edgecase: Sender is the issuer of the asset
         sendableAssets[slug] = {
-          asset: asset,
+          asset,
           sendable: true,
         };
       } else {
@@ -136,21 +136,21 @@ export default function Send(driver) {
     });
 
     // Show stuff the recipient doesn't trust
-    _.each(driver.session.account.balances, balance => {
-      const asset = Stellarify.asset(balance);
-      const slug = Stellarify.assetToSlug(asset);
+    _.each(driver.session.account.balances, (balance) => {
+      const asset = Foneroify.asset(balance);
+      const slug = Foneroify.assetToSlug(asset);
       if (asset.isNative()) {
         return;
       }
 
       if (!sendableAssets.hasOwnProperty(slug) && !receiverTrusts.hasOwnProperty(slug)) {
         unSendableAssets[slug] = {
-          asset: asset,
+          asset,
           sendable: false,
           reason: 'receiverNoTrust',
         };
       }
-    })
+    });
 
     _.each(sendableAssets, (availability, slug) => {
       this.availableAssets[slug] = availability;
@@ -160,14 +160,14 @@ export default function Send(driver) {
     });
 
     if (directory.destinations.hasOwnProperty(this.accountId)) {
-      let whitelist = directory.destinations[this.accountId].acceptedAssetsWhitelist;
+      const whitelist = directory.destinations[this.accountId].acceptedAssetsWhitelist;
       if (whitelist) {
         this.availableAssets = _.map(this.availableAssets, (availability, slug) => {
           if (whitelist.indexOf(slug) === -1) {
             availability.sendable = false;
             availability.reason = 'assetNotWhitelisted';
           }
-          return availability
+          return availability;
         });
       }
     }
@@ -202,7 +202,7 @@ export default function Send(driver) {
         // Prevent race race conditions
         const destInput = this.step1.destInput;
 
-        StellarSdk.FederationServer.resolve(this.step1.destInput)
+        FoneroSdk.FederationServer.resolve(this.step1.destInput)
         .then((federationRecord) => {
           if (destInput !== this.step1.destInput) {
             return;
@@ -242,7 +242,7 @@ export default function Send(driver) {
           this.event.trigger();
           loadTargetAccountDetails();
         })
-        .catch(err => {
+        .catch((err) => {
           if (destInput !== this.step1.destInput) {
             return;
           }
@@ -305,20 +305,20 @@ export default function Send(driver) {
           content: this.memoContent,
         };
 
-        let tx = await MagicSpoon.buildTxSendPayment(driver.Server, driver.session.account, {
+        const tx = await MagicSpoon.buildTxSendPayment(driver.Server, driver.session.account, {
           destination: this.accountId,
           asset: this.step2.availability.asset,
           amount: this.step3.amount,
           memo: sendMemo,
         });
 
-        let bssResult = await driver.session.handlers.buildSignSubmit(tx);
+        const bssResult = await driver.session.handlers.buildSignSubmit(tx);
 
         if (bssResult.status === 'finish') {
           this.state = 'pending';
           this.event.trigger();
 
-          let result = await bssResult.serverResult;
+          const result = await bssResult.serverResult;
           this.txId = result.hash;
           this.state = 'success';
         }

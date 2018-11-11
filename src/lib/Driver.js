@@ -12,7 +12,7 @@ import Modal from './driver/Modal';
 BigNumber.config({ EXPONENTIAL_AT: 100 });
 
 function Driver(driverOpts) {
-  this.Server = new StellarSdk.Server(driverOpts.network.horizonUrl);
+  this.Server = new FoneroSdk.Server(driverOpts.network.horizonUrl);
   this.Server.serverUrl = driverOpts.network.horizonUrl;
 
   this.session = new Session(this);
@@ -23,8 +23,8 @@ function Driver(driverOpts) {
   this.modal = new Modal(this);
 
   window.view = (accountId) => {
-    this.session.handlers.logInWithPublicKey(accountId)
-  }
+    this.session.handlers.logInWithPublicKey(accountId);
+  };
 }
 
 export default Driver;

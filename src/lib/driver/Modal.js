@@ -25,7 +25,7 @@ export default function Modal(driver) {
     activate: (modalName, inputData) => {
       if (this.active) {
         // You can only activate if not already active
-        console.error('Bug: Trying to create ' + modalName + ' but a modal is already active');
+        console.error(`Bug: Trying to create ${modalName} but a modal is already active`);
         return Promise.resolve({
           status: 'cancel',
         });
@@ -35,7 +35,7 @@ export default function Modal(driver) {
       this.modalName = modalName;
       this.inputData = inputData;
       this.event.trigger();
-      return new Promise(function(resolve, reject){
+      return new Promise((resolve, reject) => {
         activeResolver = resolve;
       });
     },
@@ -52,7 +52,7 @@ export default function Modal(driver) {
       this.active = false;
       activeResolver({
         status: 'finish',
-        output: output,
+        output,
       });
       this.event.trigger();
     },

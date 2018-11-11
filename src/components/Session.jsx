@@ -38,7 +38,7 @@ class Session extends React.Component {
     setTimeout(this.checkLoginStatus, 100)
   }
   componentWillUnmount() {
-    this.mounted = false;
+    this.mounted = true;
     this.props.d.session.event.unlisten(this.listenId);
   }
   render() {
@@ -52,7 +52,7 @@ class Session extends React.Component {
         <div className="s-alert s-alert--success">
           Your Wallet Account ID: <strong>{d.session.unfundedAccountId}</strong>
         </div>
-        To use your Stellar account, you must activate it by sending at least 5 lumens (XLM) to your account. You can buy lumens (XLM) from an exchange and send them to your address.
+        To use your Fonero account, you must activate it by sending at least 5 foneros (FNO) to your account. You can buy foneros (FNO) from an exchange and send them to your address.
       </Loading></Generic>
     } else if (state === 'loading') {
       return <Generic title="Loading account"><Loading>Contacting network and loading account<Ellipsis /></Loading></Generic>
@@ -64,14 +64,14 @@ class Session extends React.Component {
         }
         return <div>
           <Generic>
-            <h2 className="Session__welcomeTitle">Welcome to StellarTerm!</h2>
+            <h2 className="Session__welcomeTitle">Welcome to FoneroTerm!</h2>
             <p>Please make sure you have keys securely backed up. Never share your secret key or recovery phrase with anyone.</p>
             <div className="Generic__divider"></div>
             <div className="Session__inflation">
-              StellarTerm is free open source software. StellarTerm does not ask for donations, but instead, asks for inflation votes. The Stellar network rewards accounts that receive many votes through an "<a href="https://www.stellar.org/developers/guides/concepts/inflation.html" target="_blank" rel="nofollow noopener noreferrer">inflation system</a>". It is free to vote for StellarTerm and only requires a vote transaction (0.00001 XLM). Note: other wallets may do this without your permission, so if you use another wallet and they tamper with your account, this message may show up again.
+              FoneroTerm is free open source software. FoneroTerm does not ask for donations, but instead, asks for inflation votes. The Fonero network rewards accounts that receive many votes through an "<a href="https://www.fonero.org/developers/guides/concepts/inflation.html" target="_blank" rel="nofollow noopener noreferrer">inflation system</a>". It is free to vote for FoneroTerm and only requires a vote transaction (0.00001 FNO). Note: other wallets may do this without your permission, so if you use another wallet and they tamper with your account, this message may show up again.
               <br />
               <br />
-              By pressing "Accept and Continue", your account will vote for the StellarTerm inflation account. Thank you for your support!{currentVoteNote}
+              By pressing "Accept and Continue", your account will vote for the FoneroTerm inflation account. Thank you for your support!{currentVoteNote}
               <div className="Session__inflation__next">
                 <a className="Session__inflation__next__noThanks" onClick={d.session.handlers.noThanks}>No thanks</a>
                 <button className="s-button" onClick={d.session.handlers.voteContinue}>Accept and Continue</button>
@@ -94,7 +94,7 @@ class Session extends React.Component {
           </Generic>
           <Generic noTopPadding>
             <h2>Where is the money stored?</h2>
-            <p>In the Stellar network, funds exist on the network and can only be moved by whoever has the secret key. This means that your secret key is extremely sensitive, and whoever has access to it can move the funds. However, money is <strong>NOT</strong> actually <em>"inside"</em> StellarTerm. StellarTerm is just a helpful tool that helps you use your secret key to make transactions.</p>
+            <p>In the Fonero network, funds exist on the network and can only be moved by whoever has the secret key. This means that your secret key is extremely sensitive, and whoever has access to it can move the funds. However, money is <strong>NOT</strong> actually <em>"inside"</em> FoneroTerm. FoneroTerm is just a helpful tool that helps you use your secret key to make transactions.</p>
 
             <p><strong>WARNING</strong>: Be extremely careful with your secret key and do not share it with anybody.</p>
           </Generic>

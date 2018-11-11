@@ -1,19 +1,19 @@
 {
-  "name": "stellarterm-directory",
+  "name": "fonero-trade-directory",
   "version": "0.2.2",
-  "description": "The directory as used in StellarTerm",
+  "description": "The directory as used in Fonero Trade",
   "main": "directory.js",
   "scripts": {
     "test": "./checkBuild.sh"
   },
   "keywords": [
-    "stellar",
-    "stellarterm"
+    "fonero",
+    "fonero-trade"
   ],
-  "author": "Ultra Stellar, LLC",
+  "author": "Ultra Fonero, LLC",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/stellarterm/stellarterm/issues"
+    "url": "https://github.com/fonero-project/fonero-trade/issues"
   },
-  "homepage": "https://github.com/stellarterm/stellarterm/tree/master/directory#readme"
+  "homepage": "https://github.com/fonero-project/fonero-trade/tree/master/directory#readme"
 }

@@ -23,7 +23,7 @@ Changes up to November 2017:
     - Tool to create a keypair
 
   Ticker
-    - New ticker backend process to generate information about the Stellar network
+    - New ticker backend process to generate information about the Fonero network
     - Estimates price, volume, and "activity" of each asset
     - Ticker built on AWS "serverless" technology with high uptime
 
@@ -37,13 +37,13 @@ Changes up to November 2017:
 
   Directory
     - Directory refactored into a separate standalone module
-    - Directory added to npm: https://www.npmjs.com/package/stellarterm-directory
+    - Directory added to npm: https://www.npmjs.com/package/fonero-trade-directory
     - Oriented market pairs to be shown more consistently
     - Added many new assets and defined new guidelines on directory inclusion
 
   Optimizations
     - Removed ubuntu font in exchange for a main font with monospaced numbers
-    - Upgraded to newer stellar-sdk and fixed deprecation issues
+    - Upgraded to newer fonero-sdk and fixed deprecation issues
 
   Bugs
     - Many small bugs squashed
