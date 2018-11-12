@@ -19,7 +19,7 @@ directory.DirectoryBuilder = DirectoryBuilder;
 //   code: 'ASSETCODE_ASSETCODE',
 //   issuer: 'Ga_issuer_account_id',
 // });
-/*
+
 directory.addAnchor({
   domain: 'ximcoin.com',
   website: 'https://ximcoin.com',
@@ -262,7 +262,7 @@ directory.addAsset('stronghold.co', {
   instructions: 'https://stronghold.co/send-receive-ethereum.html',
 });
 directory.addAsset('stronghold.co', {
-  code: 'XLM',
+  code: 'FNO',
   issuer: 'GBSTRH4QOTWNSVA6E4HFERETX4ZLSR3CIUBLK7AXYII277PFJC4BBYOG',
   instructions: 'https://stronghold.co/send-receive-lumens.html',
   unlisted: true,
@@ -679,24 +679,282 @@ directory.addAsset('pr.network', {
 directory.addWildcard('pr.network', {
   issuer: 'GAZPKDTEZ5UM3BF4E7FL7EMXRMLH76F2TNVXRLOF6SCVXOFWSPCEWFI5',
 });
-*/
+
 // Pairs involving "fiat" assets
 // "Fiat" asset should be counterSelling
 directory.addPair({
   baseBuying: ['FNO', 'native'],
-  counterSelling: ['BTC', 'native'],
+  counterSelling: ['CNY', 'ripplefox.com'],
 });
 directory.addPair({
   baseBuying: ['FNO', 'native'],
-  counterSelling: ['USD', 'native'],
+  counterSelling: ['JPY', 'vcbear.net'],
 });
 directory.addPair({
   baseBuying: ['FNO', 'native'],
-  counterSelling: ['EUR', 'native'],
+  counterSelling: ['EURT', 'tempo.eu.com'],
+});
+directory.addPair({
+  baseBuying: ['BTC', 'naobtc.com'],
+  counterSelling: ['EURT', 'tempo.eu.com'],
 });
 directory.addPair({
   baseBuying: ['FNO', 'native'],
-  counterSelling: ['RUB', 'native'],
+  counterSelling: ['HKDT', 'cryptomover.com'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['COP', 'anclax.com'],
+});
+directory.addPair({
+  baseBuying: ['EURT', 'tempo.eu.com'],
+  counterSelling: ['PHP', 'coins.asia'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['PHP', 'coins.asia'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['NGNT', 'cowrie.exchange'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['NGN', 'flutterwave.com'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['NGN', 'tonaira.com'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['EUR', 'moni.com'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['USD', 'golix.io'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['USD', 'stronghold.co'],
+});
+
+// Pairs involving "BTC"
+// "BTC" should be counterSelling
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['BTC', 'nezly.com'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['BTC', 'stronghold.co'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['BTC', 'naobtc.com'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['BTC', 'apay.io'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['BTC', 'vcbear.net'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'native'],
+  counterSelling: ['BTC', 'golix.io'],
+});
+
+// Pairs involving FNO
+// FNO should be counterSelling
+directory.addPair({
+  baseBuying: ['XIM', 'ximcoin.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['TON', 'tontinetrust.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['TARI', 'cryptotari.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['FRAS', 'frasindo.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['PEDI', 'pedity.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['NEZ', 'nezly.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['ETH', 'nezly.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['SLM', 'superlumen.org'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['XRP', 'vcbear.net'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['TELLUS', 'irene.energy'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['TFC', 'thefutbolcoin.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['STEM', 'stemchain.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['ETH', 'stronghold.co'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['FNO', 'stronghold.co'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['XEL', 'naobtc.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['MOBI', 'mobius.network'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['CHRC', 'charnatoken.top'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['BCH', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['LTC', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['ETH', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['BAT', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['ICN', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['OMG', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['REP', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['ZRX', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['KIN', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['LINK', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['MTL', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['SALT', 'apay.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['XIR', 'xirkle.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['SLT', 'smartlands.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['REPO', 'repocoin.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['REPO', 'old.repocoin.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['EQD', 'equid.co'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['SEED', 'collective21.org'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['RMT', 'sureremit.co'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['RMT', 'old.sureremit.co'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['CM3', 'cryptomover.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['CM10', 'cryptomover.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['CMA', 'cryptomover.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['CMS', 'cryptomover.com'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['XLQ', 'liquido.i-server.org'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['XA9', 'astral9.io'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['WIN', 'winsome.gift'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['XPR', 'pr.network'],
+  counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+    baseBuying: ['TERN', 'ternio.io'],
+    counterSelling: ['FNO', 'native'],
+});
+directory.addPair({
+  baseBuying: ['SIX', 'six.network'],
+  counterSelling: ['FNO', 'native'],
 });
 
 directory.addDestination('GCEGERI7COJYNNID6CYSKS5DPPLGCCLPTOSCDD2LG5SJIVWM5ISUPERI', {
